@@ -12,6 +12,7 @@ const Login = () => {
 
     const location = useLocation();
     let from = location.state?.from?.pathname || "/";
+    let errorElement;
 
     const [
         signInWithEmailAndPassword,
@@ -19,6 +20,13 @@ const Login = () => {
         loading,
         error,
       ] = useSignInWithEmailAndPassword(auth);
+
+      if (error) {
+        errorElement=
+          <div>
+            <p>Error: {error?.message}</p>
+          </div>
+      }
 
       if (user){
         navigate(from, { replace: true });
@@ -47,15 +55,16 @@ const Login = () => {
                     <Form.Label>Password</Form.Label>
                     <Form.Control ref={passwordRef} type="password" placeholder="Password" required/>
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                {/* <Form.Group className="mb-3" controlId="formBasicCheckbox">
                     <Form.Check type="checkbox" label="Check me out" />
-                </Form.Group>
-                <Button variant="primary" type="submit">
-                    Submit
+                </Form.Group> */}
+                <Button variant="primary w-50 mx-auto d-block" type="submit">
+                    Login
                 </Button>
             </Form>
-            <p>New to Genius car? <Link to="/register" className='text-danger pe-auto text-decoration-none'onClick={navigateRegister}>Please Register</Link></p>
-            
+            {errorElement}
+            <p className='mt-2'>New to Genius car? <Link to="/register" className='text-danger pe-auto text-decoration-none'onClick={navigateRegister}>Please Register</Link></p>
+
             <SocialLogin></SocialLogin>
         </div>
     );
